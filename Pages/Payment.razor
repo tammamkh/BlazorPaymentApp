@@ -1,0 +1,31 @@
+@page "/payment"
+@inject IPaymentService PaymentService
+
+<h3>Payment</h3>
+
+<div>
+    <label>Card Number:</label>
+    <input @bind="cardNumber" placeholder="1234-5678-9012-3456" />
+</div>
+
+<div>
+    <label>Amount:</label>
+    <input type="number" @bind="amount" />
+</div>
+
+<button @onclick="MakePayment">Pay Now</button>
+
+<p>@message</p>
+
+@code {
+    private string cardNumber = string.Empty;
+    private decimal amount;
+    private string message = string.Empty;
+
+    private async Task MakePayment()
+    {
+        var success = await PaymentService.ProcessPaymentAsync(cardNumber, amount);
+        message = success ? "Payment Successful!" : "Payment Failed.";
+    }
+}
+
